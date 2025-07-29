@@ -41,3 +41,8 @@ uvicorn==0.34.0
 uvloop==0.21.0
 watchfiles==1.0.5
 websockets==15.0.1
+
+# Extra deps for backend CRUD/auth
+sqlmodel==0.0.18
+passlib[bcrypt]==1.7.4
+python-jose==3.3.0
