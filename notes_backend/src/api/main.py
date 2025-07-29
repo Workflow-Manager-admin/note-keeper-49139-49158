@@ -18,7 +18,14 @@ DB_PATH = os.environ.get("DB_PATH", "sqlite:///notes.db")
 
 app = FastAPI(
     title="Note Keeper Backend API",
-    description="API for managing user notes. Supports authentication, note CRUD, and search.",
+    description=(
+        "API for managing user notes. Supports authentication, note CRUD, and search.\n\n"
+        "**Usage notes:**\n"
+        "- Authenticate first using `/auth/signup` and `/auth/token` endpoints to receive your access token.\n"
+        "- For note endpoints, you must include the `Authorization: Bearer <token>` header in your requests.\n"
+        "- CORS allows requests only from the configured React frontend (set via FRONTEND_ORIGIN env variable).\n"
+        "- See each endpoint for summary and details. All endpoint responses are JSON."
+    ),
     version="0.1.0",
     openapi_tags=[
         {"name": "auth", "description": "User authentication"},
@@ -26,9 +33,12 @@ app = FastAPI(
     ],
 )
 
+# Set allowed origins for CORS to restrict to the frontend React domain
+# You can customize later if deployed, e.g. ["https://notes.yoursite.com"]
+FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[FRONTEND_ORIGIN],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
